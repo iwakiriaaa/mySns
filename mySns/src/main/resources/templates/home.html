@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+ 
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.2/css/all.css" integrity="sha384-/rXc/GQVaYpyDdyxK+ecHPVYJSN9bmVFBvjA/9eOB+pb3F2w2N6fc5qB9Ew5yIns" crossorigin="anonymous">
+    
+    <link type="text/css" rel="stylesheet" href="/css/bmesse.css" />
+    
+    <script src= "https://code.jquery.com/jquery-3.3.1.min.js" integrity= "sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT" crossorigin= "anonymous" ></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+</head>
+
+<body>
+	
+	
+	<!-- 自分やユーザーの情報 -->
+    <div id="your_container">
+
+        <!-- チャットの外側部分① -->
+        <div id="bms_messages_container">
+            <!-- ヘッダー部分② -->
+            <div id="bms_chat_header">
+                <!--ステータス-->
+                <div id="bms_chat_user_status">
+                    <!--ステータスアイコン-->
+                    <div id="bms_status_icon">●</div>
+                    <!--ユーザー名-->
+                    <div id="bms_chat_user_name">
+						<th:block th:if="${loginId != null}">
+								<p th:text="ようこそ！ + ${user_name} + さん" style="display:inline;"></p>
+								<a th:href="@{/edit}" style="display:inline;">ユーザー編集はこちら</a>
+						</th:block>
+					</div>
+                </div>
+            </div>
+
+            <!-- タイムライン部分③ -->
+            <div id="bms_messages">
+				<br>
+				<th:block th:each="toukouList:${toukouList}">
+					<th:block th:if="${toukouList.user_id != loginId}">
+		                <!--メッセージ１（左側）-->
+		                <div class="bms_message bms_left">
+							<div id="profile" th:text="${toukouList.user_name}" th:onclick="|profileClicked('__${toukouList.user_id}__')|" 
+							data-toggle="modal" data-target="#exampleModalLong"></div>
+		                    <div class="bms_message_box">
+		                        <div class="bms_message_content">
+		                            <div class="bms_message_text" style="text-align:left;">
+										<th:block th:text="${toukouList.content}"></th:block>
+									</div>
+		                        </div>
+		                    </div>
+		                </div>
+		           	    <div class="bms_clear"></div><!-- 回り込みを解除（スタイルはcssで充てる） -->    
+		           	    <br>
+	                </th:block>
+	                
+	                <!--メッセージ２（右側）-->
+	                <th:block th:if="${toukouList.user_id == loginId}">
+		                <div class="bms_message bms_right" style="text-align:right;">
+							<div id="profile" th:text="${toukouList.user_name}" th:onclick="|profileClicked('__${toukouList.user_id}__')|" 
+							data-toggle="modal" data-target="#exampleModalLong"></div>
+		                    <div class="bms_message_box">
+		                        <div class="bms_message_content">
+		                            <div class="bms_message_text">
+										<th:block th:text="${toukouList.content}"></th:block>
+										<br>
+									</div>
+		                        </div>
+		                    </div>
+		                </div>
+		                <div class="bms_clear"></div><!-- 回り込みを解除（スタイルはcssで充てる） -->
+		                <br>
+	                </th:block>
+                </th:block>
+           	 </div>
+       	 </div>
+        
+        <th:block th:if="${loginId != null}">
+            <!-- テキストボックス、送信ボタン④ -->
+            <form th:action="@{/submit}" method="post">
+	            <div id="bms_send">
+	                <textarea id="bms_message" name="bms_message"></textarea>
+	                <button id="bms_send_btn" name="bms_send_message">投稿</button>
+	            </div>
+            </form>
+    	</th:block>
+    </div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">プロフィール</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="profileContent">
+        <th:block th:text="${test}"></th:block>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+ </div>
+
+</body>
+
+
+<script>
+	function profileClicked (id) {
+		var profileContent = document.getElementById('profileContent')
+		let URL = "http://localhost:8080/profile?id=" + id 
+		
+		$.ajax({
+			url: URL,
+			type: "get",
+			success: function (profileData) {
+				profileContent.innerText= "ユーザーネーム ： " + profileData[0] + "\n" + "投稿数 : " + profileData[1] + "件";
+			},
+			error: function () {
+				profileContent.innerText="access error"
+			}
+		})
+	}
+</script>
+
+</html>

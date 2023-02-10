@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ja"
+	  xmlns:th="http://www.thymeleaf.org"
+
+<head>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+
+<body>
+	<div class="row">
+		<div class="col-4">
+		</div>
+
+		<div class="col-4">
+			<form th:action="@{/regist}" method="post">
+				<label class="form-label" for="loginId">email:</label><br>
+				<input type="text" class="form-control" id="email" name="email" oninput="InputFieldCheck();">
+
+				<br>
+				
+				<label class="form-label" for="username">ユーザーネーム:</label><br>
+				<input type="text" class="form-control" id="userName" name="userName" oninput="InputFieldCheck();">
+				
+				<br>
+
+				<label class="form-label" for="password">パスワード:<b id="error_msg" name="error_msg"></b></label><br>
+				<input type="password" class="form-control" id="password" name="password" oninput="confirmPassword(); InputFieldCheck();">
+				
+				<br>
+				
+				<label class="form-label" for="password">パスワード(確認):</label><br>
+				<input type="password" class="form-control" id="rePassword" name="rePassword" oninput="confirmPassword(); InputFieldCheck();">
+
+				<br>
+
+				<button type="submit" class="btn btn-primary" disabled id="button" name="button">登録</button>
+			</form>
+
+
+			<hr>
+			<a href="/login">
+				<button type="button" class="btn btn-danger">ログイン</button>
+			</a>
+		</div>
+
+		<div class="col-4">
+		</div>
+	</div>
+</body>
+	<script th:inline="javascript">
+		var passwordCheck = false;	//パスワードが一致したらtrue
+		const button = document.getElementById('button');
+		
+	    window.addEventListener('load', (event) => {
+  			button.style.backgroundColor = "gray";
+  			button.style.border = "gray";
+		});	
+		
+		//入力するたびにパスワード一致チェック
+		function confirmPassword() {
+			const password = document.getElementById('password').value;
+			const rePassword = document.getElementById('rePassword').value;
+			const errorMsg = document.getElementById('error_msg');
+            
+            if (password != "") {
+				if (password == rePassword) {
+	                errorMsg.innerText = "";
+	                passwordCheck = true;
+	            } else {
+	                errorMsg.innerText = "パスワードが一致しません";
+	                passwordCheck = false;
+	            }
+			} else {
+				errorMsg.innerText = "パスワードを入力してください";
+				passwordCheck = false;
+			}
+			errorMsg.style.color = "red";
+        }		
+        
+        function InputFieldCheck() {
+			
+			const email = document.getElementById('email').value;
+			const userName = document.getElementById('userName').value;
+		
+			if ((passwordCheck == true) && (!userName == "") && (!email == "")) {
+				button.disabled = null;		//ボタンを押せるようにする。
+			    button.style.backgroundColor = "#0d6efd";
+			    button.style.border = "#0d6efd";
+			} else {
+				button.disabled = "disabled";	//ボタンを押せないようにする。
+				button.style.backgroundColor = "gray";
+				button.style.border = "gray";
+			}
+		}
+	</script>
+</html>
