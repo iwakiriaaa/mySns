@@ -14,7 +14,10 @@ public class ApiController {
 	
 	@Autowired
 	JdbcTemplate jdbcTemplate;
-	
+//aaaaaaaaaaaaaaaaaaaaaaaaa
+//aaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+//aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+//aaaaaaaaaaaaaaaaaaaaaaaaaaaa
 	@GetMapping(path = "/profile")
 	public String[] profileGetUserProfile(@RequestParam("id") Integer id) {
 		List<Map<String, Object>> loginUser = jdbcTemplate.queryForList("SELECT * FROM user WHERE user_id=?", id);

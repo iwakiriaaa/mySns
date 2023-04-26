@@ -20,7 +20,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.mySns.model.LoginIdSession;
 
 import jakarta.servlet.http.HttpSession;
-
+//aaaaaaaaaaaaaaaaaaaaaaaa
+//aaaaaaaaaaaaaaaaaaaaaaaa
 @Controller
 public class MySnsController {
 
